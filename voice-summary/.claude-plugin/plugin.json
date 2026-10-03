@@ -1,6 +1,6 @@
 {
   "name": "voice-summary",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Speaks a one-sentence summary of each long turn when it ends.",
   "author": {
     "name": "Nicolas Vergez"
@@ -9,19 +9,19 @@
   "userConfig": {
     "enabled": {
       "type": "boolean",
-      "title": "Voice summary",
+      "title": "Voice summary: enabled",
       "description": "Speak a short summary when a turn ends.",
       "default": true
     },
     "minSeconds": {
       "type": "number",
-      "title": "Minimum turn length (seconds)",
-      "description": "Turns shorter than this stay silent. 0 speaks every turn.",
+      "title": "Voice summary: minimum seconds",
+      "description": "Turns shorter than this many seconds stay silent. 0 speaks every turn.",
       "default": 15
     },
     "language": {
       "type": "string",
-      "title": "Summary language",
+      "title": "Voice summary: language",
       "description": "Language of the spoken summary. Pick the one your voice reads.",
       "default": "fr",
       "options": [
@@ -31,25 +31,25 @@
     },
     "voice": {
       "type": "string",
-      "title": "System voice",
+      "title": "Voice summary: system voice",
       "description": "Exact name of a system voice, as `say -v '?'` lists it. Empty uses the system default.",
       "default": ""
     },
     "model": {
       "type": "string",
-      "title": "Summary model",
+      "title": "Voice summary: model",
       "description": "Model alias or id that writes the summary.",
       "default": "haiku"
     },
     "elevenLabsVoiceId": {
       "type": "string",
-      "title": "ElevenLabs voice ID",
+      "title": "Voice summary: ElevenLabs voice ID",
       "description": "When set, and ELEVENLABS_API_KEY is in the environment, ElevenLabs speaks the summary. Empty keeps the system voice.",
       "default": ""
     },
     "elevenLabsModel": {
       "type": "string",
-      "title": "ElevenLabs model",
+      "title": "Voice summary: ElevenLabs model",
       "description": "ElevenLabs model id. eleven_v4_turbo is fast and half the price per character; eleven_v4 and eleven_multilingual_v2 cost the full price.",
       "default": "eleven_v4_turbo"
     }

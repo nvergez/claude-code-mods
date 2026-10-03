@@ -22,7 +22,7 @@ Before you install:
 
 ### Configure, update, remove
 
-A mod's settings are rows of `/config`, and `/plugin configure voice-summary@claude-code-mods` lists them too. They can also be given at install:
+A mod's settings are rows of `/config`, each prefixed with the mod's name, and `/plugin configure voice-summary@claude-code-mods` lists them too. They can also be given at install:
 
 ```sh
 claude plugin install voice-summary@claude-code-mods --config minSeconds=30 --config language=en
@@ -52,19 +52,19 @@ macOS only: the system voice is `say`, and audio clips play through `afplay`.
 
 | Row in `/config` | Option | Default | Notes |
 | --- | --- | --- | --- |
-| Voice summary | `enabled` | `true` | Turns the mod on or off |
-| Minimum turn length (seconds) | `minSeconds` | `15` | `0` speaks every turn |
-| Summary language | `language` | `fr` | `fr` or `en`; pick the one your voice reads |
-| System voice | `voice` | system default | Exact name from `say -v '?'` |
-| Summary model | `model` | `haiku` | Alias or model id that writes the recap |
-| ElevenLabs voice ID | `elevenLabsVoiceId` | empty | Empty keeps the system voice |
-| ElevenLabs model | `elevenLabsModel` | `eleven_v4_turbo` | `eleven_v4` and `eleven_multilingual_v2` cost twice as much per character |
+| Voice summary: enabled | `enabled` | `true` | Turns the mod on or off |
+| Voice summary: minimum seconds | `minSeconds` | `15` | `0` speaks every turn |
+| Voice summary: language | `language` | `fr` | `fr` or `en`; pick the one your voice reads |
+| Voice summary: system voice | `voice` | system default | Exact name from `say -v '?'` |
+| Voice summary: model | `model` | `haiku` | Alias or model id that writes the recap |
+| Voice summary: ElevenLabs voice ID | `elevenLabsVoiceId` | empty | Empty keeps the system voice |
+| Voice summary: ElevenLabs model | `elevenLabsModel` | `eleven_v4_turbo` | `eleven_v4` and `eleven_multilingual_v2` cost twice as much per character |
 
 The default language is French: set `language` to `en` for English summaries.
 
 ### ElevenLabs voice (optional)
 
-1. Put a voice ID in the "ElevenLabs voice ID" row of `/config`.
+1. Put a voice ID in the "Voice summary: ElevenLabs voice ID" row of `/config`.
 2. Export your API key in your shell profile:
 
    ```sh
