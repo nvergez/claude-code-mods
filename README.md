@@ -1,8 +1,6 @@
 # claude-code-mods
 
-Personal mods for [Claude Code](https://claude.com/claude-code). A mod is a plugin made of function hooks: a small TypeScript module that Claude Code loads and hot-reloads. Each folder of this repo is one mod.
-
-> Mods use Claude Code's function-hooks plugin API. It is early access and can change between releases, so a mod may need an update after Claude Code updates.
+Mods for [Claude Code](https://claude.com/claude-code). A mod is a plugin made of function hooks: a small TypeScript module that runs inside your Claude Code session. Each folder of this repo is one mod, and the repo is a plugin marketplace, so a mod installs in two commands.
 
 | Mod | What it does |
 | --- | --- |
@@ -10,19 +8,34 @@ Personal mods for [Claude Code](https://claude.com/claude-code). A mod is a plug
 
 ## Install
 
-Clone the repo, then name each mod folder in `CLAUDE_CODE_PLUGIN_DIRS`, in the `env` block of `~/.claude/settings.json`. Several folders are separated by `:`.
-
-```json
-{
-  "env": {
-    "CLAUDE_CODE_PLUGIN_DIRS": "~/projects/claude-code-mods/voice-summary"
-  }
-}
+```sh
+claude plugin marketplace add nvergez/claude-code-mods
+claude plugin install voice-summary@claude-code-mods
 ```
 
-Restart Claude Code: every session now loads the mod. To try a mod in one session only, use `claude --plugin-dir <mod folder>` instead.
+Then start a new Claude Code session. The same two steps exist inside a session, under `/plugin`.
 
-A mod's settings are rows of `/config`. They are stored in `~/.claude/settings.json` under `pluginConfigs["<mod>@inline"].options`.
+Before you install:
+
+- **Early access.** Mods use Claude Code's function-hooks plugin API. It needs a recent Claude Code, it is rolled out per account, and it can change between releases. Where it is not available, the plugin installs but its hooks do not load and the mod does nothing.
+- **Trust.** A mod is code that runs in your session and can reach what the session reaches: the model, files, commands, the network. Read a mod's `hooks/register.ts` before installing it.
+
+### Configure, update, remove
+
+A mod's settings are rows of `/config`, and `/plugin configure voice-summary@claude-code-mods` lists them too. They can also be given at install:
+
+```sh
+claude plugin install voice-summary@claude-code-mods --config minSeconds=30 --config language=en
+```
+
+```sh
+# update
+claude plugin marketplace update claude-code-mods
+claude plugin update voice-summary@claude-code-mods
+
+# remove
+claude plugin uninstall voice-summary@claude-code-mods
+```
 
 ## voice-summary
 
@@ -47,6 +60,8 @@ macOS only: the system voice is `say`, and audio clips play through `afplay`.
 | ElevenLabs voice ID | `elevenLabsVoiceId` | empty | Empty keeps the system voice |
 | ElevenLabs model | `elevenLabsModel` | `eleven_v4_turbo` | `eleven_v4` and `eleven_multilingual_v2` cost twice as much per character |
 
+The default language is French: set `language` to `en` for English summaries.
+
 ### ElevenLabs voice (optional)
 
 1. Put a voice ID in the "ElevenLabs voice ID" row of `/config`.
@@ -64,9 +79,22 @@ The system voice takes over, and a dim line in the transcript says why, when the
 
 ## Development
 
-Folders named in `CLAUDE_CODE_PLUGIN_DIRS` are watched: saving a file reloads the mod in the running session.
+An installed mod is a copy: editing this repo does not change it. To work on a mod, load it from your clone instead. Name each mod folder in `CLAUDE_CODE_PLUGIN_DIRS`, in the `env` block of `~/.claude/settings.json` (several folders are separated by `:`), then restart Claude Code:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/projects/claude-code-mods/voice-summary"
+  }
+}
+```
+
+For one session only, `claude --plugin-dir <mod folder>` does the same. Folders loaded this way are watched: saving a file reloads the mod in the running session. Do not also install the same mod from the marketplace, or it runs twice.
+
+A mod loaded from a folder keeps its settings under `pluginConfigs["<mod>@inline"]` in `~/.claude/settings.json`; an installed one under `pluginConfigs["<mod>@claude-code-mods"]`.
 
 ```sh
+claude plugin validate .               # the marketplace manifest
 claude plugin validate voice-summary   # what the engine will accept
 claude plugin test voice-summary       # runs tests/*.test.ts against the engine
 tsc -p voice-summary                   # type-check
@@ -87,4 +115,4 @@ A reload discards what the mod was doing. With `voice-summary`, a turn in which 
   tsconfig.json                { "extends": "./.claude-plugin/types/tsconfig.json" }
 ```
 
-Then add the folder to `CLAUDE_CODE_PLUGIN_DIRS` and restart Claude Code.
+Then list it in `.claude-plugin/marketplace.json`, and bump the mod's `version` in its `plugin.json` when you publish a change.

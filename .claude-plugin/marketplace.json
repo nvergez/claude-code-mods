@@ -1,0 +1,15 @@
+{
+  "name": "claude-code-mods",
+  "description": "Mods for Claude Code: plugins made of function hooks.",
+  "owner": {
+    "name": "Nicolas Vergez",
+    "url": "https://github.com/nvergez"
+  },
+  "plugins": [
+    {
+      "name": "voice-summary",
+      "source": "./voice-summary",
+      "description": "Speaks a one-sentence summary of each long turn when it ends."
+    }
+  ]
+}
